@@ -1,0 +1,54 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>a5c078e5-1ed5-4585-9591-4744b35281c5</ProjectGuid>
+    <OutputType>File</OutputType>
+    <AssemblyName>Hive</AssemblyName>
+    <StartFile>Script.hql</StartFile>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <Name>bookstoresalesanalaysis</Name>
+    <RootNamespace>bookstoresalesanalaysis</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <OutputPath>bin\Release\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="BookSuggestions.hql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="CustomerRank.hql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="DiffMonthlySales.hql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="LagLead.hql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="MonthlySales.hql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="monthly_category_sales.hql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="MonthNameMonthlySales.hql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="ntile.hql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="SalesbyBooks.hql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="SalesbyCategory.hql">
+      <SubType>Content</SubType>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(AppData)\Microsoft\DataLake\MsBuild\1.0\Hive.targets" />
+</Project>

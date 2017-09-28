@@ -1,0 +1,7 @@
+C:\Users\benja\OneDrive - Microsoft\Labs & Training & Demo\Training\HDInsight\LabAssets\HDI\Hive\Hiveapp\Hiveapp\bin\Debug\Hiveapp.exe.config
+C:\Users\benja\OneDrive - Microsoft\Labs & Training & Demo\Training\HDInsight\LabAssets\HDI\Hive\Hiveapp\Hiveapp\bin\Debug\Hiveapp.exe
+C:\Users\benja\OneDrive - Microsoft\Labs & Training & Demo\Training\HDInsight\LabAssets\HDI\Hive\Hiveapp\Hiveapp\bin\Debug\Hiveapp.pdb
+C:\Users\benja\OneDrive - Microsoft\Labs & Training & Demo\Training\HDInsight\LabAssets\HDI\Hive\Hiveapp\Hiveapp\obj\Debug\Hiveapp.csprojResolveAssemblyReference.cache
+C:\Users\benja\OneDrive - Microsoft\Labs & Training & Demo\Training\HDInsight\LabAssets\HDI\Hive\Hiveapp\Hiveapp\obj\Debug\Hiveapp.csproj.CoreCompileInputs.cache
+C:\Users\benja\OneDrive - Microsoft\Labs & Training & Demo\Training\HDInsight\LabAssets\HDI\Hive\Hiveapp\Hiveapp\obj\Debug\Hiveapp.exe
+C:\Users\benja\OneDrive - Microsoft\Labs & Training & Demo\Training\HDInsight\LabAssets\HDI\Hive\Hiveapp\Hiveapp\obj\Debug\Hiveapp.pdb

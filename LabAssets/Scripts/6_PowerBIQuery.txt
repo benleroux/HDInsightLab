@@ -1,0 +1,12 @@
+SELECT 
+ 	BookName AS Book, 
+ 	SUM(PaymentAmount) AS Sales 
+FROM 
+ 	HDILABDB.weblogs 
+WHERE 
+ 	PurchaseType = "Purchased" 
+GROUP BY 
+ 	BookName 
+ORDER BY 
+ 	Sales DESC 
+LIMIT 10; 
