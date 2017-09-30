@@ -3,57 +3,48 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "location": {
-            "type": "string"
+            "type": "string",
+            "allowedValues": [
+                "Canada East",
+                "Canada Central"
+            ]
         },
         "virtualMachineName": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "dsvmlab-"
         },
         "virtualMachineSize": {
-            "type": "string"
+            "type": "string",
+            "allowedValues": [
+                "Standard_DS2_v2",
+                "Standard_DS3_v2",
+                "Standard_DS4_v2"
+            ],
+            "defaultValue": "Standard_DS3_v2"          
         },
         "adminUsername": {
-            "type": "string"
-        },
-        "virtualNetworkName": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "labuser"
         },
         "networkInterfaceName": {
-            "type": "string"
-        },
-        "networkSecurityGroupName": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "nic-dsvmlab-"
         },
         "adminPassword": {
             "type": "securestring"
         },
         "storageAccountName": {
-            "type": "string"
-        },
-        "storageAccountType": {
-            "type": "string"
-        },
-        "addressPrefix": {
-            "type": "string"
-        },
-        "subnetName": {
-            "type": "string"
-        },
-        "subnetPrefix": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "storage-dsvmlab-"
         },
         "publicIpAddressName": {
-            "type": "string"
-        },
-        "publicIpAddressType": {
-            "type": "string"
-        },
-        "publicIpAddressSku": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "pip-"
         }
     },
     "variables": {
-        "vnetId": "[resourceId('mtllabvm','Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
-        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
+        "vnetId": "[resourceId('mtllabvm','Microsoft.Network/virtualNetworks', 'vnet-dsvmlab')]",
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', 'default')]"
     },
     "resources": [
         {
@@ -113,25 +104,25 @@
             "apiVersion": "2015-06-15",
             "location": "[parameters('location')]",
             "properties": {
-                "accountType": "[parameters('storageAccountType')]"
+                "accountType": "Standard_LRS"
             }
         },
         {
-            "name": "[parameters('virtualNetworkName')]",
+            "name": "vnet-dsvmlab",
             "type": "Microsoft.Network/virtualNetworks",
             "apiVersion": "2016-12-01",
             "location": "[parameters('location')]",
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
-                        "[parameters('addressPrefix')]"
+                        "10.0.22.0/24"
                     ]
                 },
                 "subnets": [
                     {
                         "name": "[parameters('subnetName')]",
                         "properties": {
-                            "addressPrefix": "[parameters('subnetPrefix')]"
+                            "addressPrefix": "10.0.22.0/24"
                         }
                     }
                 ]
@@ -143,9 +134,9 @@
             "apiVersion": "2016-09-01",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
+                "[concat('Microsoft.Network/virtualNetworks/', 'vnet-dsvmlab')]",
                 "[concat('Microsoft.Network/publicIpAddresses/', parameters('publicIpAddressName'))]",
-                "[concat('Microsoft.Network/networkSecurityGroups/', parameters('networkSecurityGroupName'))]"
+                "[concat('Microsoft.Network/networkSecurityGroups/', 'subnet-nsg')]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -163,7 +154,7 @@
                     }
                 ],
                 "networkSecurityGroup": {
-                    "id": "[resourceId('mtllabvm', 'Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]"
+                    "id": "[resourceId('mtllabvm', 'Microsoft.Network/networkSecurityGroups', 'subnet-nsg')]"
                 }
             }
         },
@@ -173,14 +164,14 @@
             "apiVersion": "2017-08-01",
             "location": "[parameters('location')]",
             "properties": {
-                "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
+                "publicIpAllocationMethod": "Dynamic"
             },
             "sku": {
-                "name": "[parameters('publicIpAddressSku')]"
+                "name": "Basic"
             }
         },
         {
-            "name": "[parameters('networkSecurityGroupName')]",
+            "name": "subnet-nsg",
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2017-06-01",
             "location": "[parameters('location')]",
