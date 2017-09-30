@@ -120,7 +120,7 @@
                 },
                 "subnets": [
                     {
-                        "name": "[parameters('subnetName')]",
+                        "name": "default",
                         "properties": {
                             "addressPrefix": "10.0.22.0/24"
                         }
