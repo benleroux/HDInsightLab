@@ -15,7 +15,7 @@ FIELDS TERMINATED by '\1' lines TERMINATED by '\n'
 STORED AS TEXTFILE LOCATION 
 'wasb://${hiveconf:Container}@${hiveconf:Storage}.blob.core.windows.net/bookstore/HDILABDB.${hiveconf:Tablename}/' 
 AS 
-SELECT TRANSFORM (month, totalamount) 
+SELECT TRANSFORM (month, totalsales) 
 USING 'Hiveapp.exe' AS 
 (month int, monthname string, sales string) 
 FROM HDILABDB.MonthlySales; 
