@@ -29,14 +29,10 @@
         "virtualNetworkName": {
             "type": "string",
             "defaultValue": "vnet-dsvmlab"
-        },
+        },        
         "networkInterfaceName": {
             "type": "string",
-            "defaultValue": "nic-dsvmlab-"
-        },
-        "networkSecurityGroupName": {
-            "type": "string",
-            "defaultValue": "nsg-dsvmlab"
+            "defaultValue": "nic-dsvmlab"
         },
         "adminPassword": {
             "type": "securestring"
@@ -45,38 +41,14 @@
             "type": "string",
             "defaultValue": "dsvmlab"
         },
-        "storageAccountType": {
-            "type": "string",
-            "defaultValue": "Standard_LRS"
-        },
-        "addressPrefix": {
-            "type": "string",
-            "defaultValue": "10.0.22.0/24"
-        },
-        "subnetName": {
-            "type": "string",
-            "defaultValue": "default"
-        },
-        "subnetPrefix": {
-            "type": "string",
-            "defaultValue": "10.0.22.0/24"
-        },
         "publicIpAddressName": {
             "type": "string",
             "defaultValue": "pip-dsvmlab-"
-        },
-        "publicIpAddressType": {
-            "type": "string",
-            "defaultValue": "Dynamic"
-        },
-        "publicIpAddressSku": {
-            "type": "string",
-            "defaultValue": "Basic"
         }
     },
     "variables": {
-        "vnetId": "[resourceId('mtllabvm','Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
-        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
+        "vnetId": "[resourceId('mtlhdilab','Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', 'default')]"
     },
     "resources": [
         {
@@ -104,15 +76,14 @@
                     "imageReference": {
                         "publisher": "microsoft-ads",
                         "offer": "windows-data-science-vm",
-                        "sku": "windows2016byol",
+                        "sku": "windows2016",
                         "version": "latest"
                     },
                     "osDisk": {
                         "createOption": "fromImage",
-                        "vhd": {
-                            "uri": "[concat(concat(reference(resourceId('mtllabvm', 'Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2015-06-15').primaryEndpoints['blob'], 'vhds/'), parameters('virtualMachineName'), '20170930170747.vhd')]"
-                        },
-                        "name": "[parameters('virtualMachineName')]"
+                        "managedDisk": {
+                            "storageAccountType": "Premium_LRS"
+                        }
                     },
                     "dataDisks": []
                 },
@@ -125,7 +96,7 @@
                 }
             },
             "plan": {
-                "name": "windows2016byol",
+                "name": "windows2016",
                 "publisher": "microsoft-ads",
                 "product": "windows-data-science-vm"
             }
@@ -136,25 +107,25 @@
             "apiVersion": "2015-06-15",
             "location": "[parameters('location')]",
             "properties": {
-                "accountType": "[parameters('storageAccountType')]"
+                "accountType": "Premium_LRS"
             }
         },
         {
-            "name": "[parameters('virtualNetworkName')]",
+            "name": "vnet-dsvmlab",
             "type": "Microsoft.Network/virtualNetworks",
             "apiVersion": "2016-12-01",
             "location": "[parameters('location')]",
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
-                        "[parameters('addressPrefix')]"
+                        "10.0.22.0/24"
                     ]
                 },
                 "subnets": [
                     {
-                        "name": "[parameters('subnetName')]",
+                        "name": "default",
                         "properties": {
-                            "addressPrefix": "[parameters('subnetPrefix')]"
+                            "addressPrefix": "10.0.22.0/24"
                         }
                     }
                 ]
@@ -166,9 +137,9 @@
             "apiVersion": "2016-09-01",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
+                "[concat('Microsoft.Network/virtualNetworks/', 'vnet-dsvmlab')]",
                 "[concat('Microsoft.Network/publicIpAddresses/', parameters('publicIpAddressName'))]",
-                "[concat('Microsoft.Network/networkSecurityGroups/', parameters('networkSecurityGroupName'))]"
+                "[concat('Microsoft.Network/networkSecurityGroups/', 'nsg-dsvmlab')]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -180,13 +151,13 @@
                             },
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
-                                "id": "[resourceId('mtllabvm','Microsoft.Network/publicIpAddresses', parameters('publicIpAddressName'))]"
+                                "id": "['Microsoft.Network/publicIpAddresses', parameters('publicIpAddressName'))]"
                             }
                         }
                     }
                 ],
                 "networkSecurityGroup": {
-                    "id": "[resourceId('mtllabvm', 'Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]"
+                    "id": "[ 'Microsoft.Network/networkSecurityGroups', 'nsg-dsvmlab')]"
                 }
             }
         },
@@ -196,14 +167,14 @@
             "apiVersion": "2017-08-01",
             "location": "[parameters('location')]",
             "properties": {
-                "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
+                "publicIpAllocationMethod": "Dynamic"
             },
             "sku": {
-                "name": "[parameters('publicIpAddressSku')]"
+                "name": "Basic"
             }
         },
         {
-            "name": "[parameters('networkSecurityGroupName')]",
+            "name": "nsg-dsvmlab",
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2017-06-01",
             "location": "[parameters('location')]",
