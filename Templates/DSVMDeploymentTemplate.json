@@ -8,7 +8,7 @@
                 "Canada East",
                 "Canada Central"
             ]
-        },
+        },        
         "virtualMachineName": {
             "type": "string",
             "defaultValue": "dsvmlab-"
@@ -20,7 +20,7 @@
                 "Standard_DS3_v2",
                 "Standard_DS4_v2"
             ],
-            "defaultValue": "Standard_DS3_v2"          
+            "defaultValue": "Standard_DS3_v2"
         },
         "adminUsername": {
             "type": "string",
@@ -35,7 +35,7 @@
         },
         "storageAccountName": {
             "type": "string",
-            "defaultValue": "storage-dsvmlab-"
+            "defaultValue": "dsvmlab"
         },
         "publicIpAddressName": {
             "type": "string",
